@@ -1,0 +1,9 @@
+
+<div *ngFor="let item of getLista">
+  {{item.activity}}
+  {{item.type}}
+  {{item.price}}
+  <button btn btn-sm (click)="dettagli(item.key)">Dettagli</button>
+</div>
+
+<button btn btn-lg (click)="ritorna()">Torna Indiereo</button>
