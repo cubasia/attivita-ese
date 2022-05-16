@@ -61,9 +61,11 @@ export class HomeComponent implements OnInit {
     let acty = this.profileForm.get('tipo')?.value ?? 0;
     let prezzo = this.profileForm.get('prezzo')?.value ?? 0;
     let myparameters: string[] = [];
-    if (parte > 0) myparameters = [...myparameters, 'type='+parte];
-    if (acty > 0) myparameters = [...myparameters, acty];
-    if (prezzo > 0) myparameters = [...myparameters, prezzo];
+    if (parte != 0) myparameters = [...myparameters, 'participants=' + parte];
+    if (acty != 0) myparameters = [...myparameters, 'type='+acty];
+    if (prezzo != 0) myparameters = [...myparameters, 'price='+prezzo];
+
+    // console.log(myparameters.length);
 
     let risposta = this.myService.getWithParameters(myparameters);
     this.myService
@@ -73,6 +75,7 @@ export class HomeComponent implements OnInit {
       );
   }
   inseriscieMostra(item: Observable<Attivita>) {
+    // console.log("sono qui")
     this.myService.salvaattivita(item)
     this.router.navigateByUrl('list')
   }

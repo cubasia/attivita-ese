@@ -19,12 +19,15 @@ export class ActivityService {
   getWithParameters(parameters: string[]): Observable<Attivita>  {
     let url = BASE_URL;
     let k = 0;
+    // console.log(parameters.length);
+
     for (let i = 0; i < parameters.length; i++) {
       if (k == 0) {
         url += '?' + parameters[i];
         k++;
       } else url += '&' + parameters[i];
     }
+    console.log(url);
     return this.http.getWithUrl<Attivita>(url);
     // . pipe(
     // catchError((_error) => {
