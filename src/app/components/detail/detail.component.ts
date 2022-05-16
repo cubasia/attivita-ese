@@ -21,6 +21,7 @@ export class DetailComponent implements OnInit {
     // this.attivita?=this.getLista.find(a => a.key==dividi[dividi.length-1])
       }
 
+
   get getLista(): Attivita[] {
     return this.myService.attivitaChiamate;
   }
