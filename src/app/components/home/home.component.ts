@@ -71,7 +71,7 @@ export class HomeComponent implements OnInit {
     this.myService
       .esisteattivita(risposta)
       .subscribe((x) =>
-        {console.log(x);
+        {
           x ? console.log('gia chiamata') : this.inseriscieMostra(risposta);
         }
       );

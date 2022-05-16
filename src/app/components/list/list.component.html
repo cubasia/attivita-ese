@@ -1,14 +1,27 @@
-
-<div *ngFor="let item of getLista;let i =index">
-  {{i}}
-  {{item.activity}}
-  {{item.type}}
-  {{item.price}}
-  {{item.key}}
-  {{item.participants}}
-  {{item.accessibility}}
-  {{item.link}}
-  <button btn btn-sm (click)="dettagli(item.key)">Dettagli</button>
-</div>
-
+<h1>LISTA DELLE ATTIVITA'</h1>
+<table class="table mx-auto table-light">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Activity</th>
+      <th scope="col">Type</th>
+      <th scope="col">Price</th>
+      <th scope="col">Key</th>
+      <th scope="col">Partecipants</th>
+      <th scope="col">Accessibility</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of getLista;let i =index">
+      <th scope="row">{{i+1}}</th>
+      <td>{{item.activity}}</td>
+      <td>{{item.type}}</td>
+      <td>{{item.price}}</td>
+      <td>{{item.key}}</td>
+      <td>{{item.participants}}</td>
+      <td>{{item.accessibility}}</td>
+        <button btn btn-sm (click)="dettagli(item.key)">Dettagli</button>
+    </tr>
+    </tbody>
+</table>
 <button btn btn-lg (click)="ritorna()">Torna Indiereo</button>
