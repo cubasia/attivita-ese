@@ -1,8 +1,13 @@
 
-<div *ngFor="let item of getLista">
+<div *ngFor="let item of getLista;let i =index">
+  {{i}}
   {{item.activity}}
   {{item.type}}
   {{item.price}}
+  {{item.key}}
+  {{item.participants}}
+  {{item.accessibility}}
+  {{item.link}}
   <button btn btn-sm (click)="dettagli(item.key)">Dettagli</button>
 </div>
 

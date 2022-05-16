@@ -71,13 +71,19 @@ export class HomeComponent implements OnInit {
     this.myService
       .esisteattivita(risposta)
       .subscribe((x) =>
-        x ? console.log('gia chiamata') : this.inseriscieMostra(risposta)
+        {console.log(x);
+          x ? console.log('gia chiamata') : this.inseriscieMostra(risposta);
+        }
       );
   }
   inseriscieMostra(item: Observable<Attivita>) {
     // console.log("sono qui")
+    item.subscribe(x => this.salvaechiama(x)
+    )}
+
+  salvaechiama(item: Attivita) {
     this.myService.salvaattivita(item)
-    this.router.navigateByUrl('list')
+        this.router.navigateByUrl('list')
   }
   ngOnInit(): void {
     this.profileForm.get('prezzo')?.valueChanges.subscribe((x) => {

@@ -27,20 +27,21 @@ export class ActivityService {
         k++;
       } else url += '&' + parameters[i];
     }
-    console.log(url);
+    // console.log(url);
     return this.http.getWithUrl<Attivita>(url);
     // . pipe(
     // catchError((_error) => {
     //   null
     // })
   }
-  salvaattivita(attivita: Observable<Attivita>): void {
-    attivita.subscribe((x) => (this.savedlist = [...this.savedlist, x]));
+  salvaattivita(attivita:Attivita): void {
+    this.savedlist = [...this.savedlist, attivita];
   }
   esisteattivita(attivita: Observable<Attivita>): Observable<boolean> {
 
     return attivita.pipe(switchMap(x => {
-        return of(this.savedlist.includes(x));
+      //  console.log(x.key)
+        return of(this.savedlist.some(y=>JSON.stringify(y)===JSON.stringify(x)));
         }))
 
   }

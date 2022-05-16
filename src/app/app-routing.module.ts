@@ -4,6 +4,7 @@ import { HomeComponent } from './components/home/home.component';
 import { ListComponent } from './components/list/list.component';
 import { DetailComponent } from './components/detail/detail.component';
 const routes: Routes = [
+  { path: '', redirectTo: 'activity', pathMatch: 'full' },
   {
     path: 'activity',
     component: HomeComponent,
@@ -19,7 +20,7 @@ const routes: Routes = [
     component: DetailComponent,
     pathMatch: 'full',
   },
-  { path: '**',  component: HomeComponent }
+  { path: '**', redirectTo: 'activity' }
 ];
 
 @NgModule({
