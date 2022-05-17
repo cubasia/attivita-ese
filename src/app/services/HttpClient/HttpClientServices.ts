@@ -20,7 +20,8 @@ export class HttpclientService {
   getWithUrl<T>(url: string) {
     return this._httpClient
       .get<T>(`${url}`)
-      .pipe(retry(1), catchError(this.handleError));
+      .pipe(retry(1));
+      // .pipe(retry(1), catchError(this.handleError));
   }
   // HttpClient API get() method => Fetch details
   getList<T>(url: string) {
@@ -51,11 +52,13 @@ export class HttpclientService {
     if (error.error instanceof ErrorEvent) {
       // Get client-side error
       errorMessage = error.error.message;
+
     } else {
       // Get server-side error
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+
     }
-    return throwError(() => errorMessage);
+    return throwError(() =>  errorMessage);
 
   }
 }

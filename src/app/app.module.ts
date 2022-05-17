@@ -10,8 +10,10 @@ import { HttpClientJsonpModule, HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from 'src/app/material/components';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { pricePipe } from 'src/app/pipe/pipePrezzo';
 @NgModule({
-  declarations: [AppComponent, HomeComponent, ListComponent, DetailComponent],
+  declarations: [AppComponent, HomeComponent, ListComponent, DetailComponent,
+  pricePipe],
   imports: [
     BrowserModule,
     AppRoutingModule,

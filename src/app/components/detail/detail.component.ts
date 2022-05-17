@@ -16,9 +16,7 @@ export class DetailComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    // console.log(this.router.url);
-    // let dividi=this.router.url.split("/")
-    // this.attivita?=this.getLista.find(a => a.key==dividi[dividi.length-1])
+
       }
 
 

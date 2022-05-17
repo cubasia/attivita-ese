@@ -1,27 +1,11 @@
 <h1>LISTA DELLE ATTIVITA'</h1>
-<table class="table mx-auto table-light">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Activity</th>
-      <th scope="col">Type</th>
-      <th scope="col">Price</th>
-      <th scope="col">Key</th>
-      <th scope="col">Partecipants</th>
-      <th scope="col">Accessibility</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let item of getLista;let i =index">
-      <th scope="row">{{i+1}}</th>
-      <td>{{item.activity}}</td>
-      <td>{{item.type}}</td>
-      <td>{{item.price}}</td>
-      <td>{{item.key}}</td>
-      <td>{{item.participants}}</td>
-      <td>{{item.accessibility}}</td>
-        <button btn btn-sm (click)="dettagli(item.key)">Dettagli</button>
-    </tr>
-    </tbody>
-</table>
-<button btn btn-lg (click)="ritorna()">Torna Indiereo</button>
+<div class="row my-3 py-3 align-items-center size" *ngFor="let activity of getLista;let i =index">
+  <div class="col">{{ activity.activity }}</div>
+  <div class="col">{{ activity.type | titlecase}} </div>
+  <div class="col-1">{{ activity.price | pricePipe }}</div>
+  <div class="col d-flex justify-content-end">
+    <a class="btn btn-primary" (click)="dettagli(activity.key)">Dettagli</a>
+   </div>
+  </div>
+
+<button btn btn-lg [routerLink]="['/activity']">Torna Indietro</button>

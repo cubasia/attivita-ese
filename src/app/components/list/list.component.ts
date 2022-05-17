@@ -15,14 +15,28 @@ export class ListComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
 
-  get   getLista():Attivita[] {
-   return this.myService.attivitaChiamate
+  get getLista(): Attivita[] {
+    return this.myService.attivitaChiamate;
   }
-  ritorna() {
-    this.router.navigateByUrl('activity');
-  }
-  dettagli(url:string) {
-     this.router.navigate([url], { relativeTo: this.route });
+// price(price: number): string {
+//     if (price === 0) {
+//       return 'gratis';
+//     } else if (price >= 0.1 && price <= 0.5) {
+//       return 'basso';
+//     } else if (price > 0.5 && price < 1) {
+//       return 'medio';
+//     } else if (price === 1) {
+//       return 'alto';
+//     } else {
+//       return 'medio';
+//     }
+  // }
+
+  // ritorna() {
+  //   this.router.navigateByUrl('activity');
+  // }
+  dettagli(url: string) {
+    this.router.navigate([url], { relativeTo: this.route });
   }
   ngOnInit(): void {}
 }

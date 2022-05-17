@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormControl, AbstractControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { catchError, Observable, of, Subject, Subscription, takeUntil } from 'rxjs';
 import { Attivita } from 'src/app/models/attivita';
 import { ActivityService } from '../../services/activity.service'
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,13 +11,16 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   constructor(
     private myService: ActivityService,
     private router: Router,
     private route: ActivatedRoute,
     private toastr: ToastrService
   ) {}
+
+  unsubscribe$: Subject<void> = new Subject<void>();
+
   listTipi = [
     'education',
     'recreational',
@@ -70,38 +73,45 @@ export class HomeComponent implements OnInit {
 
     // console.log(myparameters.length);
 
-    let risposta = this.myService.getWithParameters(myparameters);
-    this.myService
-      .trovataAttivita(risposta)
-      .subscribe((x) =>
+    // let risposta = this.myService.getWithParameters(myparameters).pipe(
+    //   catchError(err => of ({"error":err.message}))
+    // )
+    let risposta = this.myService.getWithParameters(myparameters)
+
+  //  risposta.subscribe(x=> console.log(x))
+    this.myService.trovataAttivita(risposta).subscribe(
+      (x) =>
         x
           ? this.toastr.warning('Attività non trovata', 'Ohh Ohh')
-          : this.verificaEsistenza(risposta)
-      );
+          : this.verificaEsistenza(risposta),
+      (error) => this.toastr.error(error.message, error.status + ' ' +error.statusText)
+    );
+
   }
   verificaEsistenza(item: Observable<Attivita>) {
-this.myService
-      .esisteattivita(item)
-      .subscribe((x) =>
-        {
-          x
-            ? this.toastr.warning('Attività già trovata', 'Ohh Ohh')
-            : this.inseriscieMostra(item);
-        }
-      );
+    this.myService.esisteattivita(item).subscribe((x) => {
+      x
+        ? this.toastr.warning('Attività già trovata', 'Ohh Ohh')
+        : this.inseriscieMostra(item);
+    });
   }
   inseriscieMostra(item: Observable<Attivita>) {
-    // console.log("sono qui")
-    item.subscribe(x => this.salvaechiama(x)
-    )}
+    item.subscribe((x) => this.salvaechiama(x));
+  }
 
   salvaechiama(item: Attivita) {
-    this.myService.salvaattivita(item)
-        this.router.navigateByUrl('list')
+    this.myService.salvaattivita(item);
+    this.router.navigateByUrl('list');
   }
   ngOnInit(): void {
-    this.profileForm.get('prezzo')?.valueChanges.subscribe((x) => {
+    let sub = this.profileForm.get('prezzo')?.valueChanges.
+      pipe(takeUntil(this.unsubscribe$))
+      .subscribe((x) => {
       this.prezzoCorrente = x;
     });
+  }
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

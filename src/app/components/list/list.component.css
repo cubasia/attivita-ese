@@ -1,1 +1,8 @@
-
+.row {
+  border: 1px solid #121212;
+  border-radius: 8px;
+}
+.size {
+  width: 80%;
+  margin: auto;
+}
