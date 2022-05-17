@@ -22,16 +22,13 @@ export class DetailComponent implements OnInit {
       }
 
 
-  get getLista(): Attivita[] {
-    return this.myService.attivitaChiamate;
-  }
 
   attivita?:Attivita
   ngOnInit(): void {
     let dividi = this.router.url.split('/');
-    this.attivita = this.getLista.find((a) => a.key == dividi[dividi.length - 1])
+    let key = dividi[dividi.length - 1]
+    this.myService.getAttivita(key).subscribe(
+      activity => this.attivita=activity)
   }
-  ritorna(): void {
-this.router.navigateByUrl('activity');
-  }
+
 }

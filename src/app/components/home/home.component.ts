@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { Attivita } from 'src/app/models/attivita';
 import { ActivityService } from '../../services/activity.service'
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -13,7 +15,8 @@ export class HomeComponent implements OnInit {
   constructor(
     private myService: ActivityService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toastr: ToastrService
   ) {}
   listTipi = [
     'education',
@@ -62,17 +65,28 @@ export class HomeComponent implements OnInit {
     let prezzo = this.profileForm.get('prezzo')?.value ?? 0;
     let myparameters: string[] = [];
     if (parte != 0) myparameters = [...myparameters, 'participants=' + parte];
-    if (acty != 0) myparameters = [...myparameters, 'type='+acty];
-    if (prezzo != 0) myparameters = [...myparameters, 'price='+prezzo];
+    if (acty != 0) myparameters = [...myparameters, 'type=' + acty];
+    if (prezzo != 0) myparameters = [...myparameters, 'price=' + prezzo];
 
     // console.log(myparameters.length);
 
     let risposta = this.myService.getWithParameters(myparameters);
     this.myService
-      .esisteattivita(risposta)
+      .trovataAttivita(risposta)
+      .subscribe((x) =>
+        x
+          ? this.toastr.warning('Attività non trovata', 'Ohh Ohh')
+          : this.verificaEsistenza(risposta)
+      );
+  }
+  verificaEsistenza(item: Observable<Attivita>) {
+this.myService
+      .esisteattivita(item)
       .subscribe((x) =>
         {
-          x ? console.log('gia chiamata') : this.inseriscieMostra(risposta);
+          x
+            ? this.toastr.warning('Attività già trovata', 'Ohh Ohh')
+            : this.inseriscieMostra(item);
         }
       );
   }

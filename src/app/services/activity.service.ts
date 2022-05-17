@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpclientService } from './HttpClient/HttpClientServices';
 import { Attivita } from '../models/attivita';
-import { catchError, map, Observable, of, switchMap } from 'rxjs';
-import { EMPTY_OBSERVER } from 'rxjs/internal/Subscriber';
+import {  Observable, of, switchMap } from 'rxjs';
+
 const BASE_URL = 'http://www.boredapi.com/api/activity';
 
 @Injectable({
@@ -16,23 +16,29 @@ export class ActivityService {
   get attivitaChiamate(): Attivita[] {
     return this.savedlist;
   }
+
+  getAttivita(id: string): Observable<Attivita> {
+    let result = this.savedlist.find((a) => a.key == id)
+    if (result) {
+      return of(result)
+    }
+    else {
+        let url = BASE_URL + '?key=' + id;
+        return  this.http.getWithUrl<Attivita>(url)
+      }
+    }
+
   getWithParameters(parameters: string[]): Observable<Attivita>  {
     let url = BASE_URL;
     let k = 0;
-    // console.log(parameters.length);
-
     for (let i = 0; i < parameters.length; i++) {
       if (k == 0) {
         url += '?' + parameters[i];
         k++;
       } else url += '&' + parameters[i];
     }
-    // console.log(url);
+    //  console.log(url);
     return this.http.getWithUrl<Attivita>(url);
-    // . pipe(
-    // catchError((_error) => {
-    //   null
-    // })
   }
   salvaattivita(attivita:Attivita): void {
     this.savedlist = [...this.savedlist, attivita];
@@ -43,6 +49,9 @@ export class ActivityService {
       //  console.log(x.key)
         return of(this.savedlist.some(y=>JSON.stringify(y)===JSON.stringify(x)));
         }))
-
+  }
+  trovataAttivita(attivita: Observable<Attivita>): Observable<boolean> {
+    return attivita.pipe(switchMap(x =>"error" in x ? of(true):of (false))
+    )
   }
 }
